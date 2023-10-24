@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io' show Platform;
-import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -425,6 +424,12 @@ extension Uint8ListToHex on Uint8List {
 
 extension Uint8ListFromString on String {
   Uint8List toBytes() {
-    return Uint8List.fromList(utf8.encode(this));
+    var length = this.length;
+    var result = Uint8List(length ~/ 2);
+    for (var i = 0; i < length; i += 2) {
+      var byte = int.parse(this.substring(i, i + 2), radix: 16);
+      result[i ~/ 2] = byte;
+    }
+    return result;
   }
 }
