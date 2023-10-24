@@ -344,7 +344,7 @@ class FlutterNfcKit {
   }
 
   /// iOS only, change currently displayed NFC reader session alert message with [message].
-  /// 
+  ///
   /// There must be a valid session when invoking.
   /// On Android, call to this function does nothing.
   static Future<void> setIosAlertMessage(String message) async {
@@ -361,7 +361,7 @@ class FlutterNfcKit {
   }
 
   /// Authenticate against a sector of MIFARE Classic tag.
-  /// 
+  ///
   /// Either one of [keyA] or [keyB] must be provided.
   /// If both are provided, [keyA] will be used.
   /// Returns whether authentication succeeds.
@@ -377,7 +377,7 @@ class FlutterNfcKit {
   }
 
   /// Read one block (16 bytes) from tag
-  /// 
+  ///
   /// There must be a valid session when invoking.
   /// [index] refers to the block / page index.
   /// For MIFARE Classic tags, you must first authenticate against the corresponding sector.
@@ -386,11 +386,11 @@ class FlutterNfcKit {
   static Future<Uint8List> readBlock(int index) async {
     return await _channel.invokeMethod('readBlock', {
       'index': index
-    }); 
+    });
   }
 
   /// Write one block (16B) / page (4B) to MIFARE Classic / Ultralight tag
-  /// 
+  ///
   /// There must be a valid session when invoking.
   /// [index] refers to the block / page index.
   /// For MIFARE Classic tags, you must first authenticate against the corresponding sector.
@@ -403,7 +403,7 @@ class FlutterNfcKit {
   }
 
   /// Read one sector from MIFARE Classic tag
-  /// 
+  ///
   /// There must be a valid session when invoking.
   /// [index] refers to the sector index.
   /// You must first authenticate against the corresponding sector.
@@ -415,4 +415,16 @@ class FlutterNfcKit {
     });
   }
 
+}
+
+extension Uint8ListToHex on Uint8List {
+  String toHexString() {
+    return this.map((byte) => byte.toRadixString(16).padLeft(2, '0')).join();
+  }
+}
+
+extension Uint8ListFromString on String {
+  Uint8List toBytes() {
+    return Uint8List.fromList(utf8.encode(this));
+  }
 }
